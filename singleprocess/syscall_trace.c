@@ -8,10 +8,12 @@
 #include "time.h"
 #include "string.h"
 
+#define COMMAND_LEN 16      //*DO NOT MODIFY unless it differ from your TASK_COMM_LEN.
 #define INTERVAL_T 30		//TIMESTAMP interval
 #define TERMINATION_T 300	//(INTERVAL_T * n) value is advised
 
 static FILE *csv_file;
+static char command_prefix[COMMAND_LEN];
 
 static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va_list args)
 {
@@ -24,13 +26,25 @@ static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va
 void handle_event(void *ctx, int cpu, void *data, unsigned int data_sz)
 {
 	struct data_t *m = data;
-	if(strncmp(m->command, "1b29", 4) == 0){
+	if(strncmp(m->command, command_prefix, 4) == 0){
 	fprintf(csv_file, "%s\n", m->message);
 	}
 }
 
-int main()
+void lost_event(void *ctx, int cpu, long long unsigned int data_sz) {
+	printf("lost event\n");
+}
+
+int main(int argc, char **argv)
 {
+	if (argc < 2) {
+        fprintf(stderr, "Usage: %s <process name>\n", argv[0]);
+        return 1;
+    }
+
+	strncpy(command_prefix, argv[1], 4);
+    command_prefix[4] = '\0';
+
 	printf("Collecting system calls...\n");
 	time_t start_time, current_time, time_stamp = 0;
 	time(&start_time);
@@ -75,6 +89,10 @@ int main()
 		syscall_trace_bpf__destroy(skel);
         return 1;
 	}
+
+	char file_name[6 + COMMAND_LEN + 4 + 1];
+    snprintf(file_name, sizeof(file_name), "dataset/%.256s.csv", m->command);
+	csv_file = fopen(filename, "w");
 
 	csv_file = fopen("dataset/test.csv", "w");
     if (!csv_file) {
