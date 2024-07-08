@@ -119,24 +119,24 @@ int main() {
 	time_t start_time, current_time = 0;
 	time(&start_time);
 
+
     struct dcars_bpf *skel;
-    // struct bpf_object_open_opts *o;
     int err;
-	struct perf_buffer *pb = NULL;
+    struct perf_buffer *pb = NULL;
 
-	libbpf_set_print(libbpf_print_fn);
+    libbpf_set_print(libbpf_print_fn);
 
-	char log_buf[64 * 1024];
+    char log_buf[64 * 1024];
 	LIBBPF_OPTS(bpf_object_open_opts, opts,
 		.kernel_log_buf = log_buf,
 		.kernel_log_size = sizeof(log_buf),
 		.kernel_log_level = 1,
 	);
-	
-	skel = dcars_bpf__open_opts(&opts);
+
+    skel = dcars_bpf__open_opts(&opts);
 	err = dcars_bpf__load(skel);
 
-	if (err) {
+    if (err) {
 		printf("Failed to load BPF object\n");
 		dcars_bpf__destroy(skel);
 		return 1;
@@ -157,7 +157,6 @@ int main() {
         return 1;
 	}
 
-    time_t time_stamp = time(NULL);
     while (true) {
         err = perf_buffer__poll(pb, 100);
         if (err == -EINTR) {
@@ -180,7 +179,8 @@ int main() {
             fclose(csv_files[i]);
         }
     }
+
 	perf_buffer__free(pb);
-	syscall_bpf__destroy(skel);
+	dcars_bpf__destroy(skel);
 	return -err;
 }
