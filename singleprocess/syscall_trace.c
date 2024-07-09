@@ -90,10 +90,6 @@ int main(int argc, char **argv)
         return 1;
 	}
 
-	char file_name[6 + COMMAND_LEN + 4 + 1];
-    snprintf(file_name, sizeof(file_name), "dataset/%.256s.csv", m->command);
-	csv_file = fopen(filename, "w");
-
 	csv_file = fopen("dataset/test.csv", "w");
     if (!csv_file) {
         perror("Error opening file");
