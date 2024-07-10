@@ -1,4 +1,4 @@
-TARGET = dcars
+TARGET = syscall_trace_all
 ARCH = $(shell uname -m | sed 's/x86_64/x86/' | sed 's/aarch64/arm64/')
 
 BPF_OBJ = ${TARGET:=.bpf.o}
