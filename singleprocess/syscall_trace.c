@@ -6,13 +6,11 @@
 #include "syscall_trace.h"
 #include "syscall_trace.skel.h"
 #include "time.h"
-#include "string.h"
 
 #define COMMAND_LEN 16      //*DO NOT MODIFY unless it differ from your TASK_COMM_LEN.
-#define INTERVAL_T 30		//TIMESTAMP interval
-#define TERMINATION_T 300	//(INTERVAL_T * n) value is advised
+#define INTERVAL_T 1		//TIMESTAMP interval
+#define TERMINATION_T 10	//(INTERVAL_T * n) value is advised
 
-static FILE *csv_file;
 static char command_prefix[COMMAND_LEN];
 
 static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va_list args)
@@ -26,8 +24,17 @@ static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va
 void handle_event(void *ctx, int cpu, void *data, unsigned int data_sz)
 {
 	struct data_t *m = data;
-	if(strncmp(m->command, command_prefix, 4) == 0){
-	fprintf(csv_file, "%s\n", m->message);
+	if (strncmp(m->command, command_prefix, COMMAND_LEN) == 0) {
+        char filename[256];
+        snprintf(filename, sizeof(filename), "dataset/%s.csv", m->command);
+        FILE *csv_file = fopen(filename, "a");
+        if (!csv_file) {
+            perror("Error opening file\n");
+            return;
+        }
+
+        fprintf(csv_file, "%s\n", m->message);
+        fclose(csv_file);
 	}
 }
 
@@ -42,8 +49,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-	strncpy(command_prefix, argv[1], 4);
-    command_prefix[4] = '\0';
+	strncpy(command_prefix, argv[1], COMMAND_LEN);
+    command_prefix[COMMAND_LEN] = '\0';
 
 	printf("Collecting system calls...\n");
 	time_t start_time, current_time, time_stamp = 0;
@@ -90,13 +97,6 @@ int main(int argc, char **argv)
         return 1;
 	}
 
-	csv_file = fopen("dataset/test.csv", "w");
-    if (!csv_file) {
-        perror("Error opening file");
-        return 1;
-    }
-	fprintf(csv_file, "SYSTEM_CALL\n");
-
 	while (true) {
 		err = perf_buffer__poll(pb, 100);
 		if (err == -EINTR) {
@@ -109,7 +109,13 @@ int main(int argc, char **argv)
 		}
 		time(&current_time);
 		if (difftime(current_time, time_stamp) >= INTERVAL_T) {
-			fprintf(csv_file, "TIMESTAMP\n");
+			char filename[256];
+			snprintf(filename, sizeof(filename), "dataset/%s.csv", command_prefix);
+			FILE *csv_file = fopen(filename, "a");
+			if (csv_file) {
+				fprintf(csv_file, "TIMESTAMP\n");
+				fclose(csv_file);
+			}
 			time_stamp = current_time;
 		}
 		if (difftime(current_time, start_time) >= TERMINATION_T){
@@ -118,7 +124,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-	fclose(csv_file);
+	printf("Processing data...\n");
+
 	perf_buffer__free(pb);
 	syscall_trace_bpf__destroy(skel);
 	return -err;
