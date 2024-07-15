@@ -53,7 +53,7 @@ void save_count_min_sketch_to_file(const char *filename, CountMinSketch *cms) {
 }
 
 char* get_container_id(pid_t pid, char *container_id, size_t size) {
-    char path[PATH_MAX];
+    char path[6 + PATH_MAX + 4 + 1];
     snprintf(path, sizeof(path), "/proc/%d/cgroup", pid);
     FILE *file = fopen(path, "r");
     if (!file) {
@@ -74,7 +74,7 @@ char* get_container_id(pid_t pid, char *container_id, size_t size) {
 }
 
 char* get_container_name(const char *container_id, char *container_name, size_t size) {
-    char command[PATH_MAX];
+    char command[6 + PATH_MAX + 4 + 1];
     snprintf(command, sizeof(command), "docker inspect --format '{{.Name}}' %s", container_id);
     FILE *pipe = popen(command, "r");
     if (!pipe) {
@@ -91,7 +91,7 @@ char* get_container_name(const char *container_id, char *container_name, size_t 
 
 void handle_event(void *ctx, int cpu, void *data, __u32 data_sz) {
     struct data_t *event = data;
-    char csv_filename[PATH_MAX];
+    char csv_filename[6 + PATH_MAX + 4 + 1];
     char container_id[64] = {0};
     char container_name[64] = {0};
 
