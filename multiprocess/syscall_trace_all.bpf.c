@@ -40,8 +40,11 @@ int trace_##syscall_name(struct pt_regs *ctx) { \
     data.uid = bpf_get_current_uid_gid() & 0xFFFFFFFF; \
     bpf_get_current_comm(&data.command, sizeof(data.command)); \
     __builtin_strncpy(data.syscall, #syscall_name, sizeof(data.syscall)); \
-    bpf_core_read(&data.mnt_ns, sizeof(data.mnt_ns), &task->nsproxy->mnt_ns->ns.inum); \
-    bpf_core_read(&data.pid_ns, sizeof(data.pid_ns), &task->nsproxy->pid_ns_for_children->ns.inum); \
+    /* Check if task is not null */ \
+    if (task) { \
+        data.mnt_ns = BPF_CORE_READ(task, nsproxy->mnt_ns, ns.inum); \
+        data.pid_ns = BPF_CORE_READ(task, nsproxy->pid_ns_for_children, ns.inum); \
+    } \
     if (data.uid >= 0) { \
         bpf_perf_event_output(ctx, &output, BPF_F_CURRENT_CPU, &data, sizeof(data)); \
         unsigned int key = 0; \
