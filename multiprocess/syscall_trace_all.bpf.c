@@ -37,8 +37,8 @@ int trace_##syscall_name(struct kernel_tracepoints *ctx) { \
     return 0; \
 }
 
-TRACE_SYSCALL(sys_enter_accept, "accept")
-TRACE_SYSCALL(sys_enter_accept4, "accept4")
+//TRACE_SYSCALL(sys_enter_accept, "accept")
+//TRACE_SYSCALL(sys_enter_accept4, "accept4")
 TRACE_SYSCALL(sys_enter_access, "access")
 TRACE_SYSCALL(sys_enter_acct, "acct")
 TRACE_SYSCALL(sys_enter_add_key, "add_key")
