@@ -1,58 +1,26 @@
 #ifndef COUNT_MIN_SKETCH_H
 #define COUNT_MIN_SKETCH_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
+#define CMS_WIDTH 1024
+#define CMS_DEPTH 4
 
-#define WIDTH 256
-#define DEPTH 4
+struct CountMinSketch {
+    unsigned int width;
+    unsigned int depth;
+    unsigned int table[CMS_DEPTH][CMS_WIDTH];
+};
 
-typedef struct {
-    uint32_t **table;
-    uint32_t width;
-    uint32_t depth;
-} CountMinSketch;
+static __inline int update_count_min_sketch(struct CountMinSketch *cms, unsigned int key) {
+    unsigned int min_count = -1;
 
-void init_count_min_sketch(CountMinSketch *cms, uint32_t width, uint32_t depth) {
-    cms->width = width;
-    cms->depth = depth;
-    cms->table = (uint32_t **)malloc(depth * sizeof(uint32_t *));
-    for (uint32_t i = 0; i < depth; ++i) {
-        cms->table[i] = (uint32_t *)malloc(width * sizeof(uint32_t));
-        memset(cms->table[i], 0, width * sizeof(uint32_t));
-    }
-}
-
-void update_count_min_sketch(CountMinSketch *cms, uint32_t key, const char *value) {
-    for (uint32_t i = 0; i < cms->depth; ++i) {
-        uint32_t hash = (key + i) % cms->width;
+    for (int i = 0; i < CMS_DEPTH; ++i) {
+        unsigned int hash = (key + i) % CMS_WIDTH;
         cms->table[i][hash]++;
-    }
-}
-
-void save_sketch_to_file(CountMinSketch *cms, const char *filename) {
-    FILE *file = fopen(filename, "w");
-    if (!file) {
-        fprintf(stderr, "Failed to open sketch file: %s\n", filename);
-        return;
-    }
-
-    for (uint32_t i = 0; i < cms->depth; ++i) {
-        for (uint32_t j = 0; j < cms->width; ++j) {
-            fprintf(file, "%u ", cms->table[i][j]);
+        if (cms->table[i][hash] < min_count) {
+            min_count = cms->table[i][hash];
         }
-        fprintf(file, "\n");
     }
-
-    fclose(file);
+    return min_count;
 }
 
-void destroy_count_min_sketch(CountMinSketch *cms) {
-    for (uint32_t i = 0; i < cms->depth; ++i) {
-        free(cms->table[i]);
-    }
-    free(cms->table);
-}
-
-#endif
+#endif /* COUNT_MIN_SKETCH_H */
