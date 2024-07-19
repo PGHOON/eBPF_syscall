@@ -9,6 +9,7 @@ struct data_t {
     __u32 uid;
     char command[TASK_COMM_LEN];
     char syscall[SYSCALL_NAME_LEN];
+    char container_id[64];
 };
 
 #endif /* __SYSCALL_TRACE_ALL_H */

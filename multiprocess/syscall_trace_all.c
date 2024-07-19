@@ -52,11 +52,58 @@ void save_count_min_sketch_to_file(const char *filename, CountMinSketch *cms) {
     fclose(file);
 }
 
+char* get_container_id(pid_t pid, char *container_id, size_t size) {
+    char path[PATH_MAX];
+    snprintf(path, sizeof(path), "/proc/%d/cgroup", pid);
+    FILE *file = fopen(path, "r");
+    if (!file) {
+        return NULL;
+    }
+    while (fgets(path, sizeof(path), file)) {
+        char *ptr = strstr(path, "docker/");
+        if (ptr) {
+            strncpy(container_id, ptr + strlen("docker/"), size - 1);
+            container_id[size - 1] = '\0';
+            strtok(container_id, "\n"); // Remove the newline character
+            fclose(file);
+            return container_id;
+        }
+    }
+    fclose(file);
+    return NULL;
+}
+
+char* get_container_name(const char *container_id, char *container_name, size_t size) {
+    char command[PATH_MAX];
+    snprintf(command, sizeof(command), "docker inspect --format '{{.Name}}' %s", container_id);
+    FILE *pipe = popen(command, "r");
+    if (!pipe) {
+        return NULL;
+    }
+    if (fgets(container_name, size, pipe)) {
+        strtok(container_name, "\n"); // Remove the newline character
+        pclose(pipe);
+        return container_name;
+    }
+    pclose(pipe);
+    return NULL;
+}
+
 void handle_event(void *ctx, int cpu, void *data, __u32 data_sz) {
     struct data_t *event = data;
     char csv_filename[PATH_MAX];
+    char container_id[64] = {0};
+    char container_name[64] = {0};
 
-    snprintf(csv_filename, sizeof(csv_filename), "./dataset/%s.csv", event->command);
+    if (get_container_id(event->pid, container_id, sizeof(container_id))) {
+        if (get_container_name(container_id, container_name, sizeof(container_name))) {
+            snprintf(csv_filename, sizeof(csv_filename), "./dataset/%s.csv", container_name);
+        } else {
+            snprintf(csv_filename, sizeof(csv_filename), "./dataset/unknown.csv");
+        }
+    } else {
+        snprintf(csv_filename, sizeof(csv_filename), "./dataset/unknown.csv");
+    }
 
     FILE *csv_file = fopen(csv_filename, "a");
     if (csv_file) {
