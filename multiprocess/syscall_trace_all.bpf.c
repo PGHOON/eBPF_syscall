@@ -32,13 +32,13 @@ int trace_##syscall_name(struct kernel_tracepoints *ctx) { \
     bpf_probe_read_kernel(&data.syscall, sizeof(data.syscall), tp_name); \
     bpf_probe_read_kernel_str(&data.container_id, sizeof(data.container_id), "/proc/self/cgroup"); \
     if (data.uid >= 0) { \
-    	bpf_perf_event_output(ctx, &output, BPF_F_CURRENT_CPU, &data, sizeof(data)); \
+        bpf_perf_event_output(ctx, &output, BPF_F_CURRENT_CPU, &data, sizeof(data)); \
     } \
     return 0; \
 }
 
-//TRACE_SYSCALL(sys_enter_accept, "accept")
-//TRACE_SYSCALL(sys_enter_accept4, "accept4")
+TRACE_SYSCALL(sys_enter_accept, "accept")
+TRACE_SYSCALL(sys_enter_accept4, "accept4")
 TRACE_SYSCALL(sys_enter_access, "access")
 TRACE_SYSCALL(sys_enter_acct, "acct")
 TRACE_SYSCALL(sys_enter_add_key, "add_key")
@@ -55,6 +55,7 @@ TRACE_SYSCALL(sys_enter_chmod, "chmod")
 TRACE_SYSCALL(sys_enter_chown, "chown")
 TRACE_SYSCALL(sys_enter_chroot, "chroot")
 TRACE_SYSCALL(sys_enter_clock_adjtime, "clock_adjtime")
+TRACE_SYSCALL(sys_enter_clock_getres, "clock_getres") // 추가된 항목
 TRACE_SYSCALL(sys_enter_clock_gettime, "clock_gettime")
 TRACE_SYSCALL(sys_enter_clock_nanosleep, "clock_nanosleep")
 TRACE_SYSCALL(sys_enter_clone, "clone")
@@ -77,6 +78,7 @@ TRACE_SYSCALL(sys_enter_execveat, "execveat")
 TRACE_SYSCALL(sys_enter_exit, "exit")
 TRACE_SYSCALL(sys_enter_exit_group, "exit_group")
 TRACE_SYSCALL(sys_enter_faccessat, "faccessat")
+TRACE_SYSCALL(sys_enter_faccessat2, "faccessat2") // 추가된 항목
 TRACE_SYSCALL(sys_enter_fadvise64, "fadvise64")
 TRACE_SYSCALL(sys_enter_fallocate, "fallocate")
 TRACE_SYSCALL(sys_enter_fanotify_init, "fanotify_init")
@@ -198,15 +200,16 @@ TRACE_SYSCALL(sys_enter_open, "open")
 TRACE_SYSCALL(sys_enter_open_by_handle_at, "open_by_handle_at")
 TRACE_SYSCALL(sys_enter_openat, "openat")
 TRACE_SYSCALL(sys_enter_pause, "pause")
-TRACE_SYSCALL(sys_enter_perf_event_open, "perf_event_open")
+TRACE_SYSCALL(sys_enter_perf_event_open, "perf_event_open") // 추가된 항목
 TRACE_SYSCALL(sys_enter_personality, "personality")
 TRACE_SYSCALL(sys_enter_pidfd_send_signal, "pidfd_send_signal")
+TRACE_SYSCALL(sys_enter_pidfd_getfd, "pidfd_getfd") // 추가된 항목
 TRACE_SYSCALL(sys_enter_pipe, "pipe")
 TRACE_SYSCALL(sys_enter_pipe2, "pipe2")
 TRACE_SYSCALL(sys_enter_pivot_root, "pivot_root")
-TRACE_SYSCALL(sys_enter_pkey_alloc, "pkey_alloc")
-TRACE_SYSCALL(sys_enter_pkey_free, "pkey_free")
-TRACE_SYSCALL(sys_enter_pkey_mprotect, "pkey_mprotect")
+TRACE_SYSCALL(sys_enter_pkey_alloc, "pkey_alloc") // 추가된 항목
+TRACE_SYSCALL(sys_enter_pkey_free, "pkey_free") // 추가된 항목
+TRACE_SYSCALL(sys_enter_pkey_mprotect, "pkey_mprotect") // 추가된 항목
 TRACE_SYSCALL(sys_enter_poll, "poll")
 TRACE_SYSCALL(sys_enter_ppoll, "ppoll")
 TRACE_SYSCALL(sys_enter_prctl, "prctl")
@@ -216,12 +219,15 @@ TRACE_SYSCALL(sys_enter_preadv2, "preadv2")
 TRACE_SYSCALL(sys_enter_prlimit64, "prlimit64")
 TRACE_SYSCALL(sys_enter_process_vm_readv, "process_vm_readv")
 TRACE_SYSCALL(sys_enter_process_vm_writev, "process_vm_writev")
+TRACE_SYSCALL(sys_enter_process_madvise, "process_madvise") // 추가된 항목
+TRACE_SYSCALL(sys_enter_process_mrelease, "process_mrelease") // 추가된 항목
 TRACE_SYSCALL(sys_enter_pselect6, "pselect6")
 TRACE_SYSCALL(sys_enter_ptrace, "ptrace")
 TRACE_SYSCALL(sys_enter_pwrite64, "pwrite64")
 TRACE_SYSCALL(sys_enter_pwritev, "pwritev")
 TRACE_SYSCALL(sys_enter_pwritev2, "pwritev2")
 TRACE_SYSCALL(sys_enter_quotactl, "quotactl")
+TRACE_SYSCALL(sys_enter_quotactl_fd, "quotactl_fd") // 추가된 항목
 TRACE_SYSCALL(sys_enter_read, "read")
 TRACE_SYSCALL(sys_enter_readahead, "readahead")
 TRACE_SYSCALL(sys_enter_readlink, "readlink")
@@ -334,7 +340,7 @@ TRACE_SYSCALL(sys_enter_umount, "umount")
 TRACE_SYSCALL(sys_enter_unlink, "unlink")
 TRACE_SYSCALL(sys_enter_unlinkat, "unlinkat")
 TRACE_SYSCALL(sys_enter_unshare, "unshare")
-TRACE_SYSCALL(sys_enter_userfaultfd, "userfaultfd")
+TRACE_SYSCALL(sys_enter_userfaultfd, "userfaultfd") // 추가된 항목
 TRACE_SYSCALL(sys_enter_ustat, "ustat")
 TRACE_SYSCALL(sys_enter_utime, "utime")
 TRACE_SYSCALL(sys_enter_utimensat, "utimensat")
