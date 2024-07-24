@@ -45,7 +45,7 @@ void handle_event(void *ctx, int cpu, void *data, unsigned int data_sz)
 {
     struct data_t *m = data;
     char file_name[6 + COMMAND_LEN + 4 + 1];
-    snprintf(file_name, sizeof(file_name), "buf_1/%.256s.csv", m->command);
+    snprintf(file_name, sizeof(file_name), "dataset/%.256s.csv", m->command);
 
     FILE *csv_file = NULL;
     for (int i = 0; i < file_count; ++i) {
@@ -179,7 +179,7 @@ void processCSVFiles(CountMinSketch *cms, const char *directory) {
 int main()
 {
 	printf("Collecting system calls...\n");
-	int init = system("rm -f dataset/*.csv buf_2/*.csv");
+	int init = system("rm -f dataset/*.csv");
 	if (init != 0) {
 		printf("Fail to initialize CSV files\n");
 		return 1;
