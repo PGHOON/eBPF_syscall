@@ -71,12 +71,12 @@ void handle_event(void *ctx, int cpu, void *data, unsigned int data_sz)
 
 void lost_event(void *ctx, int cpu, long long unsigned int data_sz){}
 
-unsigned int hash(const char *str, int seed) {
+unsigned int hash(const char *str, int seed, int width) {
     unsigned long hash = seed;
     int c;
     while ((c = *str++))
         hash = ((hash << 5) + hash) + c;
-    return hash % W;
+    return hash % width;
 }
 
 typedef struct {
@@ -103,15 +103,15 @@ void freeCMS(CountMinSketch *cms) {
 
 void updateCMS(CountMinSketch *cms, const char *item) {
     for (int i = 0; i < cms->depth; i++) {
-        int index = hash(item, HASH_SEED + i);
+        int index = hash(item, HASH_SEED + i, cms->width);
         cms->table[i][index]++;
     }
 }
 
 int queryCMS(CountMinSketch *cms, const char *item) {
-    int minCount = cms->table[0][hash(item, HASH_SEED)];
+    int minCount = cms->table[0][hash(item, HASH_SEED, cms->width)];
     for (int i = 1; i < cms->depth; i++) {
-        int index = hash(item, HASH_SEED + i);
+        int index = hash(item, HASH_SEED + i, cms->width);
         if (cms->table[i][index] < minCount) {
             minCount = cms->table[i][index];
         }
