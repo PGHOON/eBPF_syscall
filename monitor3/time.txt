@@ -1,0 +1,148 @@
+ε = 0.01, δ = 0.9
+272 * 3
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.011239 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010773 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010664 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010633 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010727 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010579 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010822 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010698 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010780 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 3
+Total time spent: 0.010831 seconds
+
+Average: 0.0107746
+-------------------------------------------------------------------------
+ε = 0.01, δ = 0.01
+272 * 5
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015891 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015711 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015813 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015977 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015866 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.016079 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015926 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015936 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 5
+Total time spent: 0.015715 seconds
+
+Average: 0.0158793
+-------------------------------------------------------------------------
+ε = 0.05, δ = 0.01
+55 * 5
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015808 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015723 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015837 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015699 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015793 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015673 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015684 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015701 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015716 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 5
+Total time spent: 0.015882 seconds
+
+Average: 0.0157516
+-------------------------------------------------------------------------
+ε = 0.01, δ = 0.001
+272 * 7
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021428 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021428 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021701 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021427 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021868 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021653 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021674 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021762 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021654 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 272 7
+Total time spent: 0.021438 seconds
+
+Average: 0.0216033
+-------------------------------------------------------------------------
+ε = 0.1, δ = 0.01
+28 * 5
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015821 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015694 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015712 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015775 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015679 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.016078 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.016146 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015681 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015757 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 28 5
+Total time spent: 0.015688 seconds
+
+Average: 0.0158031
+-------------------------------------------------------------------------
+ε = 0.05, δ = 0.001
+55 * 7
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021934 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021431 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021458 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021376 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.022013 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021443 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021419 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021693 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021784 seconds
+root@cryptoguard:/home/cnslab/eBPF_syscall/monitor3# ./measure_cms 55 7
+Total time spent: 0.021588 seconds
+
+Average: 0.0216139
+
