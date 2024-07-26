@@ -81,6 +81,7 @@ int main()
 		printf("Fail to initialize CSV files\n");
 		return 1;
 	}
+    struct stat st = {0};
     if (stat("./dataset", &st) == -1) {
         mkdir("./dataset", 0777);
     }
