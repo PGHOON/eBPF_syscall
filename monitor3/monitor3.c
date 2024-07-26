@@ -183,14 +183,17 @@ void processCSVFiles(CountMinSketch *cms, const char *directory) {
     closedir(dp);
 }
 
-void print_resource_usage(struct rusage *start, struct rusage *end) {
+void print_resource_usage(struct rusage *start, struct rusage *end, double total_time) {
     double user_time = (end->ru_utime.tv_sec - start->ru_utime.tv_sec) + 
                        (end->ru_utime.tv_usec - start->ru_utime.tv_usec) / 1e6;
     double sys_time = (end->ru_stime.tv_sec - start->ru_stime.tv_sec) + 
                       (end->ru_stime.tv_usec - start->ru_stime.tv_usec) / 1e6;
 
-    printf("User CPU time used: %f seconds\n", user_time);
-    printf("System CPU time used: %f seconds\n", sys_time);
+    double user_cpu_usage = (user_time / total_time) * 100.0;
+    double sys_cpu_usage = (sys_time / total_time) * 100.0;
+
+    printf("User CPU time used: %f seconds (%.2f%%)\n", user_time, user_cpu_usage);
+    printf("System CPU time used: %f seconds (%.2f%%)\n", sys_time, sys_cpu_usage);
 }
 
 int main(int argc, char **argv)
@@ -310,7 +313,7 @@ int main(int argc, char **argv)
     double time_spent = (double)(clock_end - clock_start) / CLOCKS_PER_SEC;
     printf("Total time spent: %f seconds\n", time_spent);
 
-    print_resource_usage(&usage_start, &usage_end);
+    print_resource_usage(&usage_start, &usage_end, time_spent);
 
 	return -err;
 }
