@@ -16,17 +16,12 @@
 #define COMMAND_LEN 16
 #define MAX_FILES 256
 
-#define TIME 30
+#define TIME 300
+#define INTERVAL_T 10
 
 /*
 TEST CODE
 */
-typedef struct {
-    char processName[16];
-    float benign;
-    float malware;
-} ProcessRecord;
-
 static FILE *csv_files[MAX_FILES];
 static char csv_file_names[MAX_FILES][PATH_MAX];
 static int file_count = 0;
@@ -76,7 +71,7 @@ void lost_event(void *ctx, int cpu, long long unsigned int data_sz){}
 int main()
 {
 	printf("Collecting system calls...\n");
-	int init = system("rm -f dataset/*.csv");
+	int init = system("rm -f dataset/*");
 	if (init != 0) {
 		printf("Fail to initialize CSV files\n");
 		return 1;
@@ -86,8 +81,9 @@ int main()
         mkdir("./dataset", 0777);
     }
 
-	time_t start_time, current_time = 0;
+	time_t start_time, current_time = 0, time_stamp = 0;
 	time(&start_time);
+    time_stamp = start_time;
 
     struct monitor4_bpf *skel;
 	// struct bpf_object_open_opts *o;
@@ -113,7 +109,7 @@ int main()
 		return 1;
 	}
 
-	// Attach the progams to the events
+	// Attach the programs to the events
 	err = monitor4_bpf__attach(skel);
 	if (err) {
 		fprintf(stderr, "Failed to attach BPF skeleton: %d\n", err);
@@ -132,7 +128,7 @@ int main()
 	while (true) {
 		err = perf_buffer__poll(pb, 100);
 		if (err == -EINTR) {
-			printf("Receive SIGINT: *Detection Cancled\n");
+			printf("Receive SIGINT: *Detection Canceled\n");
 			err = 0;
 			break;
 		}
@@ -141,6 +137,14 @@ int main()
 			break;
 		}
 		time(&current_time);
+		if (difftime(current_time, time_stamp) >= INTERVAL_T) {
+			for (int i = 0; i < file_count; ++i) {
+                if (csv_files[i]) {
+                    fprintf(csv_files[i], "TIMESTAMP\n");
+                }
+            }
+			time_stamp = current_time;
+		}
 		if (difftime(current_time, start_time) >= TIME){
 			err = 0;
 			break;
@@ -157,3 +161,4 @@ int main()
 
 	return -err;
 }
+
